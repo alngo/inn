@@ -17,6 +17,14 @@ impl Owner {
             name: OwnerName::new(name)?,
         })
     }
+
+    pub fn id(&self) -> &Uuid {
+        &self.id
+    }
+
+    pub fn name(&self) -> &OwnerName {
+        &self.name
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -31,5 +39,3 @@ impl OwnerName {
         Ok(Self(trimmed.to_string()))
     }
 }
-
-
