@@ -15,6 +15,7 @@ path = "src/main.rs"
 anyhow = "1.0.95"
 async-trait = "0.1.85"
 mockall = "0.13.1"
+sqlx = { version = "0.8.3", features = ["sqlite"] }
 thiserror = "2.0.9"
 uuid = { version = "1.11.0", features = ["v7"] }
 

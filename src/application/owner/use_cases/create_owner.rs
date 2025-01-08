@@ -23,7 +23,7 @@ pub struct CreateOwner<'a, A> {
 
 impl<'a, A> CreateOwner<'a, A>
 where
-    A: OwnerRepository,
+    A: OwnerRepository + std::marker::Sync,
 {
     pub fn new(owner_repository: &'a A) -> Self {
         Self { owner_repository }
@@ -35,7 +35,7 @@ impl<'a, A> RuleChecker for CreateOwner<'a, A> where A: OwnerRepository {}
 #[async_trait(?Send)]
 impl<'a, A> UseCase for CreateOwner<'a, A>
 where
-    A: OwnerRepository,
+    A: OwnerRepository + std::marker::Sync,
 {
     type Request = Request;
     type Response = Response;
@@ -43,7 +43,7 @@ where
     async fn execute(&self, request: Self::Request) -> Result<Self::Response, anyhow::Error> {
         let existing_names = vec![]; // TODO: Fetch existing names from repository
         Self::check_rule(OwnerNameMustBeUnique::new(&request.name, existing_names))?;
-        let owner = self.owner_repository.create_owner(&request)?;
+        let owner = self.owner_repository.create_owner(&request).await?;
         Ok(Response { owner })
     }
 }
