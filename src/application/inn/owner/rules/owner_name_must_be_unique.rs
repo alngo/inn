@@ -35,7 +35,7 @@ mod owner_name_must_be_unique_tests {
     #[test]
     fn test_owner_name_must_be_unique_error() {
         let rule = OwnerNameMustBeUnique::new("John Doe", vec!["John Doe".to_string()]);
-        assert_eq!(rule.is_valid(), false);
+        assert!(!rule.is_valid());
         assert_eq!(
             rule.error().to_string(),
             "owner name John Doe must be unique"
@@ -45,6 +45,6 @@ mod owner_name_must_be_unique_tests {
     #[test]
     fn test_owner_name_must_be_unique() {
         let rule = OwnerNameMustBeUnique::new("John Doe", vec!["Jane Doe".to_string()]);
-        assert_eq!(rule.is_valid(), true);
+        assert!(rule.is_valid());
     }
 }

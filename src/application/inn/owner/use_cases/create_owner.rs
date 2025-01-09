@@ -2,7 +2,8 @@ use async_trait::async_trait;
 
 use crate::{
     application::{
-        inn::owner::{rules::OwnerNameMustBeUnique, OwnerRepository}, shared::UseCase
+        inn::owner::{rules::OwnerNameMustBeUnique, OwnerRepository},
+        shared::UseCase,
     },
     domain::{Owner, RuleChecker},
 };
@@ -44,7 +45,7 @@ where
     async fn execute(&self, request: &Self::Request) -> Result {
         let existing_names = vec![]; // TODO: Fetch existing names from repository
         Self::check_rule(OwnerNameMustBeUnique::new(&request.name, existing_names))?;
-        let owner = self.owner_repository.create_owner(&request).await?;
+        let owner = self.owner_repository.create_owner(request).await?;
         Ok(Response { owner })
     }
 }
@@ -58,12 +59,10 @@ mod use_case_create_owner_tests {
     #[tokio::test]
     async fn test_create_owner() {
         let mut owner_repository = MockOwnerRepository::new();
-        owner_repository
-            .expect_create_owner()
-            .return_once(|req| {
-                let owner = Owner::new(uuid::Uuid::now_v7(), &req.name).unwrap();
-                Ok(owner)
-            });
+        owner_repository.expect_create_owner().return_once(|req| {
+            let owner = Owner::new(uuid::Uuid::now_v7(), &req.name).unwrap();
+            Ok(owner)
+        });
         let create_owner = CreateOwner::new(&owner_repository);
         let request = Request {
             name: "Alice".to_string(),

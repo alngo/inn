@@ -2,7 +2,10 @@ use std::sync::RwLock;
 
 use async_trait::async_trait;
 
-use crate::{application::inn::owner::{create_owner, OwnerRepository}, domain::Owner};
+use crate::{
+    application::inn::owner::{create_owner, OwnerRepository},
+    domain::Owner,
+};
 
 #[derive(Default, Debug)]
 pub struct InMemory {

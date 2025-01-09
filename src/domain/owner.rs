@@ -1,3 +1,5 @@
+use core::fmt;
+
 use rules::OwnerNameCannotBeEmpty;
 use uuid::Uuid;
 
@@ -37,5 +39,11 @@ impl OwnerName {
         let trimmed = raw.trim();
         Self::check_rule(OwnerNameCannotBeEmpty::new(trimmed))?;
         Ok(Self(trimmed.to_string()))
+    }
+}
+
+impl fmt::Display for OwnerName {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.0)
     }
 }

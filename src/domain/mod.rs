@@ -1,5 +1,5 @@
 mod owner;
 mod shared;
 
-pub use owner::{Owner, OwnerName};
+pub use owner::*;
 pub use shared::*;

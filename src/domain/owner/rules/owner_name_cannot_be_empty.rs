@@ -33,13 +33,13 @@ mod owner_name_cannot_be_empty_tests {
     #[test]
     fn test_owner_name_cannot_be_empty_error() {
         let rule = OwnerNameCannotBeEmpty::new("");
-        assert_eq!(rule.is_valid(), false);
+        assert!(!rule.is_valid());
         assert_eq!(rule.error().to_string(), "owner name cannot be empty");
     }
 
     #[test]
     fn test_owner_name_cannot_be_empty() {
         let rule = OwnerNameCannotBeEmpty::new("John Doe");
-        assert_eq!(rule.is_valid(), true);
+        assert!(rule.is_valid());
     }
 }
