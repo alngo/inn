@@ -2,9 +2,9 @@ use std::str::FromStr;
 
 use anyhow::Context;
 use async_trait::async_trait;
-use thiserror::Error;
 
-use crate::{application::OwnerRepository, domain::Owner};
+use crate::{application::inn::owner::{create_owner, OwnerRepository}, domain::Owner};
+
 
 #[derive(Debug, Clone)]
 pub struct Sqlite {
@@ -37,7 +37,7 @@ impl Sqlite {
 impl OwnerRepository for Sqlite {
     async fn create_owner(
         &self,
-        _req: &crate::application::create_owner::Request,
+        _req: &create_owner::Request,
     ) -> Result<Owner, anyhow::Error> {
         let tx = self.pool.begin().await?;
 
