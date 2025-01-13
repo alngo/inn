@@ -17,13 +17,16 @@ where
         Self { service, presenter }
     }
 
-    pub async fn create_owner(&self, name: &str) {
+    pub async fn create_owner(
+        &self,
+        name: &str,
+    ) -> <P as Present<create_owner::Result>>::ViewModel {
         let result = self
             .service
             .create_owner(&create_owner::Request {
                 name: name.to_string(),
             })
             .await;
-        self.presenter.present(result);
+        self.presenter.present(result)
     }
 }

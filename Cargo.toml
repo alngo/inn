@@ -14,9 +14,12 @@ path = "src/main.rs"
 [dependencies]
 anyhow = "1.0.95"
 async-trait = "0.1.85"
+axum = "0.8.1"
 mockall = "0.13.1"
+serde = { version = "1.0.217", features = ["derive"] }
 sqlx = { version = "0.8.3", features = ["sqlite"] }
 thiserror = "2.0.9"
+tower-http = { version = "0.6.2", features = ["trace", "tracing"] }
 uuid = { version = "1.11.0", features = ["v7"] }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
