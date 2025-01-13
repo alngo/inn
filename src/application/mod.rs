@@ -1,2 +1,2 @@
 pub mod inn;
-mod shared;
+pub mod shared;
