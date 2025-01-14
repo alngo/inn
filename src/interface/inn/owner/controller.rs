@@ -24,7 +24,7 @@ where
         }
     }
 
-    async fn create_owner(
+    pub async fn create_owner(
         &self,
         req: &create_owner::Request,
     ) -> <P as Present<create_owner::Result>>::ViewModel {
