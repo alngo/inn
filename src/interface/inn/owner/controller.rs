@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use crate::{
     application::{
         inn::owner::{create_owner, OwnerRepository},
@@ -6,18 +8,32 @@ use crate::{
     interface::shared::Present,
 };
 
-#[derive(Debug, Clone)]
-pub struct Controller<'r, 'p, R, P> {
-    repository: &'r R, // TODO: change to service
-    presenter: &'p P,
+#[derive(Debug)]
+pub struct Controller<R, P> {
+    repository: Arc<R>,
+    presenter: P,
 }
 
-impl<'r, 'p, R, P> Controller<'r, 'p, R, P>
+impl<R, P> Clone for Controller<R, P>
+where
+    P: Clone,
+{
+    fn clone(&self) -> Self {
+        let repository = Arc::clone(&self.repository);
+        let presenter = self.presenter.clone();
+        Self {
+            repository,
+            presenter,
+        }
+    }
+}
+
+impl<R, P> Controller<R, P>
 where
     R: OwnerRepository,
     P: Present<create_owner::Result>,
 {
-    pub const fn new(repository: &'r R, presenter: &'p P) -> Self {
+    pub const fn new(repository: Arc<R>, presenter: P) -> Self {
         Self {
             repository,
             presenter,
@@ -28,7 +44,7 @@ where
         &self,
         req: &create_owner::Request,
     ) -> <P as Present<create_owner::Result>>::ViewModel {
-        let use_case = create_owner::CreateOwner::new(self.repository);
+        let use_case = create_owner::CreateOwner::new(&*self.repository);
         let res = use_case.execute(req).await;
         self.presenter.present(res)
     }
