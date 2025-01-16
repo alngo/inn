@@ -1,6 +1,6 @@
-use crate::{application::inn::owner::create_owner, user_interface::shared::Present};
+use crate::{application::inn::owner::create_owner, interface::shared::Present};
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct Presenter;
 
 impl Present<create_owner::Result> for Presenter {
