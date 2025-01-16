@@ -8,7 +8,7 @@ use crate::{
 
 #[derive(Debug, Clone)]
 pub struct Controller<'r, 'p, R, P> {
-    repository: &'r R,
+    repository: &'r R, // TODO: change to service
     presenter: &'p P,
 }
 

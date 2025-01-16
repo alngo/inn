@@ -6,10 +6,20 @@ use tokio::net;
 
 use crate::application::inn::owner::OwnerRepository;
 
-use super::inn::{owner::present::cli, service::Service};
+use super::{
+    inn::{
+        owner::present::cli,
+        service::{InnService, Service},
+    },
+    shared::Present,
+};
 
 mod handlers;
 mod responses;
+
+struct AppState<IS: InnService<P: Present>> {
+    service: Arc<IS>,
+}
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct WebServerConfig<'a> {
@@ -43,4 +53,8 @@ impl WebServer {
             .with_context(|| "Failed to run server")?;
         Ok(())
     }
+}
+
+fn api_route() -> Router<Service<D, P>> {
+    Router::new().route("/owners", post(create_author::<BS>))
 }
