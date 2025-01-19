@@ -1,17 +1,18 @@
 use std::sync::Arc;
 
 use anyhow::Context;
-use axum::{extract::State, routing::get, Router};
+use axum::{routing::post, Router};
 use tokio::net;
 
 use crate::application::inn::owner::{create_owner, OwnerRepository};
 
 use super::{
-    inn::owner::{self, cli},
+    inn::owner::{self},
     shared::Present,
 };
 
 mod handlers;
+mod presenter;
 mod responses;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -29,7 +30,7 @@ impl WebServer {
         database: D,
         config: WebServerConfig<'_>,
     ) -> anyhow::Result<Self> {
-        let owner_controller = owner::Controller::new(Arc::new(database), cli::Presenter);
+        let owner_controller = owner::Controller::new(Arc::new(database), presenter::Presenter);
         let router = Router::new().nest("/api", owner_routes(owner_controller));
         let listener = net::TcpListener::bind(format!("0.0.0.0:{}", config.port))
             .await
@@ -52,6 +53,9 @@ where
     P: Present<create_owner::Result> + Clone + Send + Sync + 'static,
 {
     Router::new()
-        .route("/owners", get(|_: State<owner::Controller<R, P>>| async {}))
+        .route(
+            "/owners",
+            post(handlers::create_owner::create_owner::<R, P>),
+        )
         .with_state(controller)
 }

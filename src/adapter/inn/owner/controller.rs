@@ -1,11 +1,11 @@
 use std::sync::Arc;
 
 use crate::{
+    adapter::shared::Present,
     application::{
         inn::owner::{create_owner, OwnerRepository},
         shared::UseCase,
     },
-    interface::shared::Present,
 };
 
 #[derive(Debug)]

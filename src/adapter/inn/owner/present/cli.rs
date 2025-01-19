@@ -1,4 +1,4 @@
-use crate::{application::inn::owner::create_owner, interface::shared::Present};
+use crate::{adapter::shared::Present, application::inn::owner::create_owner};
 
 #[derive(Default, Clone)]
 pub struct Presenter;
